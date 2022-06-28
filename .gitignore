@@ -10,6 +10,7 @@ locklift.config.js
 build/*.code
 build/*.base64
 build/*.tvc
+**/.solc_imports/
 
 *.log
 .env

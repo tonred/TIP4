@@ -6,17 +6,23 @@ const {
 
 const main = async () => {
   const [keyPair] = await locklift.keys.getKeyPairs();
-  const Sample = await locklift.factory.getAccount('Sample');
+  const SampleCollection = await locklift.factory.getAccount('SampleCollection');
+  const SampleNFT = await locklift.factory.getAccount('SampleNFT');
+  const IndexBasis = await locklift.factory.getAccount('IndexBasis');
+  const Index = await locklift.factory.getAccount('Index');
+  const SampleStorage = await locklift.factory.getAccount('SampleStorage');
 
-  logger.log('Deploying Sample');
+  logger.log('Deploying Sample Collection');
   let sample = await locklift.giver.deployContract({
-    contract: Sample,
+    contract: SampleCollection,
     constructorParams: {
-      owner: '',
+      nftCode: SampleNFT.code,
+      indexBasisCode: IndexBasis.code,
+      indexCode: Index.code,
+      storageCode: SampleStorage.code,
+      admin: '0:0000000000000000000000000000000000000000000000000000000000000000',  // set admin address
     },
-    initParams: {
-      randomNonce: locklift.utils.getRandomNonce(),
-    },
+    initParams: {},
     keyPair
   }, locklift.utils.convertCrystal(5, 'nano'));
   await logContract(sample);

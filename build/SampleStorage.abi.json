@@ -1,0 +1,68 @@
+{
+	"ABI version": 2,
+	"version": "2.2",
+	"header": ["time"],
+	"functions": [
+		{
+			"name": "constructor",
+			"inputs": [
+				{"name":"mimeType","type":"string"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "fill",
+			"inputs": [
+				{"name":"id","type":"uint32"},
+				{"name":"chunk","type":"bytes"},
+				{"name":"value2","type":"address"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "getInfo",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"nft","type":"address"},
+				{"name":"collection","type":"address"},
+				{"name":"mimeType","type":"string"},
+				{"name":"content","type":"map(uint8,bytes)"}
+			]
+		},
+		{
+			"name": "_nft",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_nft","type":"address"}
+			]
+		},
+		{
+			"name": "_collection",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_collection","type":"address"}
+			]
+		}
+	],
+	"data": [
+		{"key":1,"name":"_nft","type":"address"},
+		{"key":2,"name":"_collection","type":"address"}
+	],
+	"events": [
+	],
+	"fields": [
+		{"name":"_pubkey","type":"uint256"},
+		{"name":"_timestamp","type":"uint64"},
+		{"name":"_constructorFlag","type":"bool"},
+		{"name":"_nft","type":"address"},
+		{"name":"_collection","type":"address"},
+		{"name":"_mimeType","type":"string"},
+		{"name":"_content","type":"map(uint8,bytes)"}
+	]
+}
