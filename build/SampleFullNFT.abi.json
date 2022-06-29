@@ -9,7 +9,8 @@
 				{"name":"owner","type":"address"},
 				{"name":"manager","type":"address"},
 				{"name":"indexCode","type":"cell"},
-				{"name":"creator","type":"address"}
+				{"name":"creator","type":"address"},
+				{"name":"storage_","type":"address"}
 			],
 			"outputs": [
 			]
@@ -23,12 +24,23 @@
 			]
 		},
 		{
-			"name": "getStorage",
+			"name": "changeOwner",
 			"inputs": [
-				{"name":"answerId","type":"uint32"}
+				{"name":"newOwner","type":"address"},
+				{"name":"sendGasTo","type":"address"},
+				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
 			],
 			"outputs": [
-				{"name":"addr","type":"address"}
+			]
+		},
+		{
+			"name": "transfer",
+			"inputs": [
+				{"name":"to","type":"address"},
+				{"name":"sendGasTo","type":"address"},
+				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
+			],
+			"outputs": [
 			]
 		},
 		{
@@ -38,7 +50,7 @@
 				{"name":"interfaceID","type":"uint32"}
 			],
 			"outputs": [
-				{"name":"value0","type":"bool"}
+				{"name":"support","type":"bool"}
 			]
 		},
 		{
@@ -52,6 +64,15 @@
 				{"name":"owner","type":"address"},
 				{"name":"manager","type":"address"},
 				{"name":"gasReceiver","type":"address"}
+			]
+		},
+		{
+			"name": "getStorage",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"addr","type":"address"}
 			]
 		},
 		{
@@ -96,29 +117,9 @@
 			]
 		},
 		{
-			"name": "changeOwner",
-			"inputs": [
-				{"name":"newOwner","type":"address"},
-				{"name":"sendGasTo","type":"address"},
-				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
-			],
-			"outputs": [
-			]
-		},
-		{
 			"name": "changeManager",
 			"inputs": [
 				{"name":"newManager","type":"address"},
-				{"name":"sendGasTo","type":"address"},
-				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "transfer",
-			"inputs": [
-				{"name":"to","type":"address"},
 				{"name":"sendGasTo","type":"address"},
 				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
 			],
@@ -147,6 +148,38 @@
 			],
 			"outputs": [
 				{"name":"_indexCode","type":"cell"}
+			]
+		},
+		{
+			"name": "_storage",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_storage","type":"address"}
+			]
+		},
+		{
+			"name": "_id",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_id","type":"uint256"}
+			]
+		},
+		{
+			"name": "_collection",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_collection","type":"address"}
+			]
+		},
+		{
+			"name": "_ready",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_ready","type":"bool"}
 			]
 		}
 	],
@@ -203,7 +236,9 @@
 		{"name":"_owner","type":"address"},
 		{"name":"_manager","type":"address"},
 		{"name":"_indexCode","type":"cell"},
+		{"name":"_storage","type":"address"},
 		{"name":"_id","type":"uint256"},
-		{"name":"_collection","type":"address"}
+		{"name":"_collection","type":"address"},
+		{"name":"_ready","type":"bool"}
 	]
 }

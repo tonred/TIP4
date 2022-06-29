@@ -22,7 +22,7 @@ contract IndexBasis is IIndexBasis {
     constructor() public onlyCollection {}
 
     function getInfo() override public view responsible returns (address collection) {
-        return {value: 0, flag: 64, bounce: true} _collection;
+        return {value: 0, flag: 64} _collection;
     }
 
     function destruct(address gasReceiver) override public onlyCollection {

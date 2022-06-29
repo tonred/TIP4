@@ -17,3 +17,10 @@ build/*.tvc
 artifacts/
 
 migration-log.json
+
+!build/IndexBasis.base64
+!build/IndexBasis.code
+!build/IndexBasis.tvc
+!build/Index.base64
+!build/Index.code
+!build/Index.tvc

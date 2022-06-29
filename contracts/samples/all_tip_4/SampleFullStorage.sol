@@ -1,10 +1,10 @@
 pragma ton-solidity >= 0.58.0;
 
-import "../standard/4_4/TIP4_4Storage.sol";
-import "./utils/CheckPubKey.sol";
+import "../../standard/4_4/TIP4_4Storage.sol";
+import "@broxus/contracts/contracts/utils/CheckPubKey.sol";
 
 
-contract SampleStorage is TIP4_4Storage, CheckPubKey {
+contract SampleFullStorage is TIP4_4Storage, CheckPubKey {
 
     address public static _nft;
     address public static _collection;

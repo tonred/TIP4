@@ -25,12 +25,13 @@ abstract contract CollectionBase4_4 is CollectionBase4_1, TIP4_4Collection {
 
     function resolveStorage(address nft) public view responsible virtual override returns (address addr);
 
-    function supportsInterface(bytes4 interfaceID) public view responsible virtual override returns (bool) {
-        return {value: 0, flag: 64, bounce: false} (
-            interfaceID == bytes4(0x3204EC29) ||    // TIP6
-            interfaceID == bytes4(0x1217AAAB) ||    // TIP4.1 Collection
-            interfaceID == bytes4(0x6302A6F8)       // TIP4.4 Collection
+    function supportsInterface(bytes4 interfaceID) public view responsible virtual override returns (bool support) {
+        bytes4 tip44ID = (
+            bytes4(tvm.functionId(TIP4_4Collection.storageCode)) ^
+            bytes4(tvm.functionId(TIP4_4Collection.storageCodeHash)) ^
+            bytes4(tvm.functionId(TIP4_4Collection.resolveStorage))
         );
+        return {value: 0, flag: 64, bounce: false} super.supportsInterface(interfaceID) || interfaceID == tip44ID;
     }
 
 }

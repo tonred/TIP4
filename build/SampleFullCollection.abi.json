@@ -42,13 +42,25 @@
 				{"name":"interfaceID","type":"uint32"}
 			],
 			"outputs": [
-				{"name":"value0","type":"bool"}
+				{"name":"support","type":"bool"}
+			]
+		},
+		{
+			"name": "nftAddressByName",
+			"inputs": [
+				{"name":"answerId","type":"uint32"},
+				{"name":"name","type":"string"}
+			],
+			"outputs": [
+				{"name":"nft","type":"address"}
 			]
 		},
 		{
 			"name": "mint",
 			"inputs": [
-				{"name":"name","type":"string"}
+				{"name":"name","type":"string"},
+				{"name":"owner","type":"address"},
+				{"name":"manager","type":"address"}
 			],
 			"outputs": [
 			]

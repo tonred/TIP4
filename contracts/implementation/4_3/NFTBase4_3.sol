@@ -32,12 +32,23 @@ abstract contract NFTBase4_3 is NFTBase4_1, TIP4_3NFT {
         return {value: 0, flag: 64, bounce: false} address(tvm.hash(stateInit));
     }
 
-    function supportsInterface(bytes4 interfaceID) public view responsible virtual override returns (bool) {
-        return {value: 0, flag: 64, bounce: false} (
-            interfaceID == bytes4(0x3204EC29) ||    // TIP6
-            interfaceID == bytes4(0x78084F7E) ||    // TIP4.1 NFT
-            interfaceID == bytes4(0x4DF6250B)       // TIP4.3 NFT
+    function changeOwner(address newOwner, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
+        _updateIndexes(_owner, newOwner, sendGasTo);
+        super.changeOwner(newOwner, sendGasTo, callbacks);
+    }
+
+    function transfer(address to, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
+        _updateIndexes(_owner, to, sendGasTo);
+        super.transfer(to, sendGasTo, callbacks);
+    }
+
+    function supportsInterface(bytes4 interfaceID) public view responsible virtual override returns (bool support) {
+        bytes4 tip43ID = (
+            bytes4(tvm.functionId(TIP4_3NFT.indexCode)) ^
+            bytes4(tvm.functionId(TIP4_3NFT.indexCodeHash)) ^
+            bytes4(tvm.functionId(TIP4_3NFT.resolveIndex))
         );
+        return {value: 0, flag: 64, bounce: false} super.supportsInterface(interfaceID) || interfaceID == tip43ID;
     }
 
 
@@ -80,7 +91,10 @@ abstract contract NFTBase4_3 is NFTBase4_1, TIP4_3NFT {
 
     function _buildIndexStateInit(address collection, address owner) private view returns (TvmCell) {
         string stamp = "nft";
-        TvmCell salt = abi.encode(stamp, collection, owner);
+//        TvmCell salt = abi.encode(stamp, collection, owner);  // todo?
+        TvmBuilder builder;
+        builder.store(stamp, collection, owner);
+        TvmCell salt = builder.toCell();
         TvmCell code = tvm.setCodeSalt(_indexCode, salt);
         return tvm.buildStateInit({
             contr: Index,

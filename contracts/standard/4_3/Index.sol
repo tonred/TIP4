@@ -38,7 +38,7 @@ contract Index is IIndex {
         address owner,
         address nft
     ) {
-        return {value: 0, flag: 64, bounce: true} (
+        return {value: 0, flag: 64} (
             _collection,
             _owner,
             _nft
