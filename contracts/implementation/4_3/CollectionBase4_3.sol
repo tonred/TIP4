@@ -65,8 +65,9 @@ abstract contract CollectionBase4_3 is CollectionBase4_1, TIP4_3Collection {
 
     function _buildIndexBasisStateInit() private view returns (TvmCell) {
         string stamp = "nft";
-        TvmCell salt = abi.encode(stamp);
-        TvmCell code = tvm.setCodeSalt(_indexBasisCode, salt);
+        TvmBuilder salt;
+        salt.store(stamp);
+        TvmCell code = tvm.setCodeSalt(_indexBasisCode, salt.toCell());
         return tvm.buildStateInit({
             contr: IndexBasis,
             varInit: {_collection: address(this)},

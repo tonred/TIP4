@@ -91,11 +91,9 @@ abstract contract NFTBase4_3 is NFTBase4_1, TIP4_3NFT {
 
     function _buildIndexStateInit(address collection, address owner) private view returns (TvmCell) {
         string stamp = "nft";
-//        TvmCell salt = abi.encode(stamp, collection, owner);  // todo?
-        TvmBuilder builder;
-        builder.store(stamp, collection, owner);
-        TvmCell salt = builder.toCell();
-        TvmCell code = tvm.setCodeSalt(_indexCode, salt);
+        TvmBuilder salt;
+        salt.store(stamp, collection, owner);
+        TvmCell code = tvm.setCodeSalt(_indexCode, salt.toCell());
         return tvm.buildStateInit({
             contr: Index,
             varInit: {_nft: address(this)},

@@ -18,7 +18,7 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
     function _onInit4_1(address owner, address manager) internal {
         _owner = owner;
         _manager = manager;
-        emit NftCreated(_getId(), _owner, _manager, _getCollection());  // todo emit once only
+        emit NftCreated(_getId(), _owner, _manager, _getCollection());
     }
 
 
@@ -48,7 +48,7 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
         _sendCallbacks(sendGasTo, callbacks, baseBody);
     }
 
-    function transfer(address to, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {  // todo external ?
+    function transfer(address to, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
         _reserve();
         address oldOwner = _owner;
         address oldManager = _manager;
