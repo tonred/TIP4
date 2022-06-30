@@ -44,9 +44,9 @@ abstract contract NFTBase4_3 is NFTBase4_1, TIP4_3NFT {
 
     function supportsInterface(bytes4 interfaceID) public view responsible virtual override returns (bool support) {
         bytes4 tip43ID = (
-            bytes4(tvm.functionId(TIP4_3NFT.indexCode)) ^
-            bytes4(tvm.functionId(TIP4_3NFT.indexCodeHash)) ^
-            bytes4(tvm.functionId(TIP4_3NFT.resolveIndex))
+            bytes4(tvm.functionId(this.indexCode)) ^
+            bytes4(tvm.functionId(this.indexCodeHash)) ^
+            bytes4(tvm.functionId(this.resolveIndex))
         );
         return {value: 0, flag: 64, bounce: false} super.supportsInterface(interfaceID) || interfaceID == tip43ID;
     }

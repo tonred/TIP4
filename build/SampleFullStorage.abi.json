@@ -1,12 +1,13 @@
 {
 	"ABI version": 2,
 	"version": "2.2",
-	"header": ["time"],
+	"header": ["pubkey", "time", "expire"],
 	"functions": [
 		{
 			"name": "constructor",
 			"inputs": [
-				{"name":"mimeType","type":"string"}
+				{"name":"mimeType","type":"string"},
+				{"name":"contentEncoding","type":"string"}
 			],
 			"outputs": [
 			]
@@ -16,7 +17,7 @@
 			"inputs": [
 				{"name":"id","type":"uint32"},
 				{"name":"chunk","type":"bytes"},
-				{"name":"value2","type":"address"}
+				{"name":"gasReceiver","type":"address"}
 			],
 			"outputs": [
 			]
@@ -30,7 +31,18 @@
 				{"name":"nft","type":"address"},
 				{"name":"collection","type":"address"},
 				{"name":"mimeType","type":"string"},
-				{"name":"content","type":"map(uint8,bytes)"}
+				{"name":"content","type":"map(uint32,bytes)"},
+				{"name":"contentEncoding","type":"string"}
+			]
+		},
+		{
+			"name": "supportsInterface",
+			"inputs": [
+				{"name":"answerId","type":"uint32"},
+				{"name":"interfaceID","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"support","type":"bool"}
 			]
 		},
 		{
@@ -48,6 +60,30 @@
 			"outputs": [
 				{"name":"_collection","type":"address"}
 			]
+		},
+		{
+			"name": "_mimeType",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_mimeType","type":"string"}
+			]
+		},
+		{
+			"name": "_contentEncoding",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_contentEncoding","type":"string"}
+			]
+		},
+		{
+			"name": "_content",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_content","type":"map(uint32,bytes)"}
+			]
 		}
 	],
 	"data": [
@@ -63,6 +99,7 @@
 		{"name":"_nft","type":"address"},
 		{"name":"_collection","type":"address"},
 		{"name":"_mimeType","type":"string"},
-		{"name":"_content","type":"map(uint8,bytes)"}
+		{"name":"_contentEncoding","type":"string"},
+		{"name":"_content","type":"map(uint32,bytes)"}
 	]
 }

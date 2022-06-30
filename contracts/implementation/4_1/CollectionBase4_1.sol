@@ -32,10 +32,10 @@ abstract contract CollectionBase4_1 is TIP4_1Collection, TIP6 {
     function supportsInterface(bytes4 interfaceID) public view responsible virtual override returns (bool support) {
         bytes4 tip6ID = bytes4(tvm.functionId(TIP6.supportsInterface));
         bytes4 tip41ID = (
-            bytes4(tvm.functionId(TIP4_1Collection.totalSupply)) ^
-            bytes4(tvm.functionId(TIP4_1Collection.nftCode)) ^
-            bytes4(tvm.functionId(TIP4_1Collection.nftCodeHash)) ^
-            bytes4(tvm.functionId(TIP4_1Collection.nftAddress))
+            bytes4(tvm.functionId(this.totalSupply)) ^
+            bytes4(tvm.functionId(this.nftCode)) ^
+            bytes4(tvm.functionId(this.nftCodeHash)) ^
+            bytes4(tvm.functionId(this.nftAddress))
         );
         return {value: 0, flag: 64, bounce: false} interfaceID == tip6ID || interfaceID == tip41ID;
     }

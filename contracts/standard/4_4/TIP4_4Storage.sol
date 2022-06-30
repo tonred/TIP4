@@ -7,6 +7,7 @@ interface TIP4_4Storage {
         address nft,
         address collection,
         string mimeType,
-        mapping(uint8 => bytes) content
+        mapping(uint32 => bytes) content,
+        string contentEncoding
     );
 }

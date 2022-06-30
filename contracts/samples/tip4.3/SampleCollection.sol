@@ -1,5 +1,9 @@
 pragma ton-solidity >= 0.58.0;
 
+pragma AbiHeader time;
+pragma AbiHeader expire;
+pragma AbiHeader pubkey;
+
 import "../../implementation/4_3/CollectionBase4_3.sol";
 import "../interfaces/IAdmin.sol";
 import "SampleNFT.sol";

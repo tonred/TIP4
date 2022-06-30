@@ -1,7 +1,7 @@
 {
 	"ABI version": 2,
 	"version": "2.2",
-	"header": ["time"],
+	"header": ["pubkey", "time", "expire"],
 	"functions": [
 		{
 			"name": "constructor",
@@ -18,7 +18,8 @@
 				{"name":"indexBasisCode","type":"cell"},
 				{"name":"indexCode","type":"cell"},
 				{"name":"storageCode","type":"cell"},
-				{"name":"admin","type":"address"}
+				{"name":"admin","type":"address"},
+				{"name":"pubkey","type":"uint256"}
 			],
 			"outputs": [
 			]

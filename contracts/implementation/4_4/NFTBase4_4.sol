@@ -23,8 +23,8 @@ abstract contract NFTBase4_4 is NFTBase4_1, TIP4_4NFT {
 
     function supportsInterface(bytes4 interfaceID) public view responsible virtual override returns (bool support) {
         bytes4 tip44ID = (
-            bytes4(tvm.functionId(TIP4_4NFT.onStorageFillComplete)) ^
-            bytes4(tvm.functionId(TIP4_4NFT.getStorage))
+            bytes4(tvm.functionId(this.onStorageFillComplete)) ^
+            bytes4(tvm.functionId(this.getStorage))
         );
         return {value: 0, flag: 64, bounce: false} super.supportsInterface(interfaceID) || interfaceID == tip44ID;
     }

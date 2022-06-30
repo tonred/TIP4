@@ -1,5 +1,9 @@
 pragma ton-solidity >= 0.58.0;
 
+pragma AbiHeader time;
+pragma AbiHeader expire;
+pragma AbiHeader pubkey;
+
 import "../../implementation/4_3/CollectionBase4_3.sol";
 import "../../implementation/4_4/CollectionBase4_4.sol";
 import "../interfaces/IAdmin.sol";
@@ -9,8 +13,9 @@ import "SampleFullStorage.sol";
 import "@broxus/contracts/contracts/utils/RandomNonce.sol";
 
 
-contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, IMintCallback, CheckPubKey, RandomNonce {
+contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, IMintCallback, RandomNonce {
     string constant STORAGE_MIME_TYPE = "image/png";
+    string constant STORAGE_CONTENT_ENCODING = "zstd";
 
     address public _admin;
 
@@ -25,8 +30,7 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, IMintCall
         _;
     }
 
-    constructor(TvmCell nftCode, TvmCell indexBasisCode, TvmCell indexCode, TvmCell storageCode, address admin) public checkPubKey {
-        tvm.accept();
+    constructor(TvmCell nftCode, TvmCell indexBasisCode, TvmCell indexCode, TvmCell storageCode, address admin) public {
         _onInit4_3(nftCode, indexBasisCode, indexCode);
         _onInit4_4(nftCode, storageCode);
         _admin = admin;
@@ -111,7 +115,7 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, IMintCall
             value: Gas.DEPLOY_STORAGE_VALUE,
             flag: 1,
             bounce: true
-        }(STORAGE_MIME_TYPE);
+        }(STORAGE_MIME_TYPE, STORAGE_CONTENT_ENCODING);
     }
 
     function _nftAddress(uint256 id) private view returns (address) {
@@ -133,8 +137,12 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, IMintCall
     function _buildStorageStateInit(address nft) private view returns (TvmCell) {
         return tvm.buildStateInit({
             contr: SampleFullStorage,
-            varInit: {_nft: nft},
-            code: _storageCode
+            varInit: {
+                _nft: nft,
+                _collection: address(this)
+            },
+            code: _storageCode,
+            pubkey: tvm.pubkey()
         });
     }
 

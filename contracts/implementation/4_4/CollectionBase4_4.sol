@@ -27,9 +27,9 @@ abstract contract CollectionBase4_4 is CollectionBase4_1, TIP4_4Collection {
 
     function supportsInterface(bytes4 interfaceID) public view responsible virtual override returns (bool support) {
         bytes4 tip44ID = (
-            bytes4(tvm.functionId(TIP4_4Collection.storageCode)) ^
-            bytes4(tvm.functionId(TIP4_4Collection.storageCodeHash)) ^
-            bytes4(tvm.functionId(TIP4_4Collection.resolveStorage))
+            bytes4(tvm.functionId(this.storageCode)) ^
+            bytes4(tvm.functionId(this.storageCodeHash)) ^
+            bytes4(tvm.functionId(this.resolveStorage))
         );
         return {value: 0, flag: 64, bounce: false} super.supportsInterface(interfaceID) || interfaceID == tip44ID;
     }

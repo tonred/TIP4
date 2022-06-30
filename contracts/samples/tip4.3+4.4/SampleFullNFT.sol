@@ -1,5 +1,9 @@
 pragma ton-solidity >= 0.58.0;
 
+pragma AbiHeader time;
+pragma AbiHeader expire;
+pragma AbiHeader pubkey;
+
 import "../../implementation/4_3/NFTBase4_3.sol";
 import "../../implementation/4_4/NFTBase4_4.sol";
 import "../interfaces/IMintCallback.sol";
@@ -21,6 +25,7 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4 {
     }
 
     constructor(address owner, address manager, TvmCell indexCode, address storage_, address creator) public {
+        require(msg.sender == _collection, ErrorCodes.IS_NOT_COLLECTION);
         _onInit4_3(owner, manager, indexCode);
         _onInit4_4(owner, manager, storage_);
         IMintCallback(msg.sender).onMint{

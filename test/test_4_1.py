@@ -1,7 +1,7 @@
 import random
 import string
 import unittest
-from typing import Union, Callable
+from typing import Callable, Union
 
 from tonclient.test.helpers import sync_core_client
 from tonclient.types import ParamsOfAbiEncodeBoc, AbiParam
@@ -10,6 +10,7 @@ from tonos_ts4 import ts4
 from config import NFT_NAME, NFT_NAME_ID
 from contracts.collection import Collection
 from contracts.nft import NFT
+from contracts.storage import Storage
 from contracts.utils.callback_wallet import CallbackWallet
 from contracts.utils.wallet import Wallet
 from deployer import Deployer
@@ -29,6 +30,9 @@ class Test41(unittest.TestCase):
     def test_tip6(self):
         self._test_tip6(self.collection, [0x3204EC29, 0x1217AAAB, 0x4387BBFB, 0x6302A6F8])
         self._test_tip6(self.nft, [0x3204EC29, 0x78084F7E, 0x4DF6250B, 0x009DC09A])
+        storage_address = self.nft.get_storage()
+        storage = Storage(storage_address)
+        self._test_tip6(storage, [0x3204EC29, 0x204D6296])  # todo 0x204D6296 instead of 0x4855B0B8
 
     def test_collection(self):
         # total supply
@@ -128,14 +132,14 @@ class Test41(unittest.TestCase):
         self.assertEqual(payload, info_payload, 'Payloads are different')
         return callback_wallet.get_info_base(), new_wallet
 
-    def _test_tip6(self, contract: Union[Collection, NFT], interfaces_ok: list):
+    def _test_tip6(self, contract: Union[Collection, NFT, Storage], interfaces_ok: list):
         for interface_id in interfaces_ok:
             supports = contract.supports_interface(interface_id)
-            self.assertEqual(supports, True, f'Interface {interface_id} must be supported for {contract.name_}')
+            self.assertEqual(supports, True, f'Interface {interface_id:x} must be supported for {contract.name_}')
         interfaces_bad = [0xFFFFFFFF, 0x12345678]  # corner case and random case
         for interface_id in interfaces_bad:
             supports = contract.supports_interface(interface_id)
-            self.assertEqual(supports, False, f'Interface {interface_id} must not be supported for {contract.name_}')
+            self.assertEqual(supports, False, f'Interface {interface_id:x} must not be supported for {contract.name_}')
 
     def _check_code_and_hash(self, code: ts4.Cell, code_hash: int, contract_filename: str):
         # code
