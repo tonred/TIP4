@@ -22,7 +22,7 @@ class NFT(BaseContract):
 
     # TIP4.1
     @solidity_getter(responsible=True)
-    def get_info(self) -> dict:
+    def get_info(self) -> tuple:
         pass
 
     # TIP4.1

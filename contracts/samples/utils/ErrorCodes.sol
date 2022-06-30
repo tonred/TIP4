@@ -6,4 +6,5 @@ library ErrorCodes {
     uint16 constant IS_NOT_COLLECTION       = 4002;
     uint16 constant IS_NOT_NFT              = 4003;
     uint16 constant IS_NOT_STORAGE          = 4004;
+    uint16 constant IS_NOT_MANAGER          = 4005;
 }

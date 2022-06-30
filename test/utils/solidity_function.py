@@ -38,17 +38,19 @@ def _process_function_args(function: Callable, args: tuple, kwargs: dict, ignore
         params.pop(key)
     # key names to camelcase
     params = _camelcase_dict(params)
-    # BaseContract to address
-    for key, value in params.items():
-        if isinstance(value, ts4.BaseContract):
-            params[key] = value.address
     return params, options
 
 
-def _find_sender(send_as: str, self: ts4.BaseContract, params: dict) -> Wallet:
+def _find_sender(self: ts4.BaseContract, send_as: str, kwargs: dict) -> Wallet:
     if hasattr(self, send_as):
         return getattr(self, send_as)
-    return params.pop(send_as)
+    return kwargs.pop(send_as)
+
+
+def _base_contracts_to_address(params: dict):
+    for key, value in params.items():
+        if isinstance(value, ts4.BaseContract):
+            params[key] = value.address
 
 
 @decohints
@@ -57,7 +59,8 @@ def solidity_function(send_as: str = 'owner', ignore: tuple = ()):
         def wrapper(self: ts4.BaseContract, *args, **kwargs):
             method = stringcase.camelcase(function.__name__)
             params, options = _process_function_args(function, args, kwargs, ignore)
-            sender = _find_sender(send_as, self, params)
+            sender = _find_sender(self, send_as, params)
+            _base_contracts_to_address(params)
             sender.run_target(self, options=options, method=method, params=params)
             return function(self, *args, **kwargs)
 
@@ -72,6 +75,7 @@ def solidity_getter(responsible: bool = False):
         def wrapper(self: ts4.BaseContract, *args, **kwargs):
             method = stringcase.camelcase(function.__name__)
             params, _ = _process_function_args(function, args, kwargs)
+            _base_contracts_to_address(params)
             if responsible:
                 params[ANSWER_ID_KEY] = 0
             return self.call_getter(method, params)

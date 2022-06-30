@@ -60,23 +60,23 @@ abstract contract NFTBase4_3 is NFTBase4_1, TIP4_3NFT {
     }
 
     function _deployIndexes(address owner) internal view {
-        _deployIndex(_getCollection(), owner);
         _deployIndex(address.makeAddrStd(0, 0), owner);
+        _deployIndex(_getCollection(), owner);
     }
 
     function _destroyIndexes(address owner, address gasReceiver) internal view {
-        _destroyIndex(_getCollection(), owner, gasReceiver);
         _destroyIndex(address.makeAddrStd(0, 0), owner, gasReceiver);
+        _destroyIndex(_getCollection(), owner, gasReceiver);
     }
 
-    function _deployIndex(address collection, address owner) private view {
-        TvmCell stateInit = _buildIndexStateInit(collection, owner);
+    function _deployIndex(address collectionSalt, address owner) private view {
+        TvmCell stateInit = _buildIndexStateInit(collectionSalt, owner);
         new Index{
             stateInit: stateInit,
             value: DEPLOY_INDEX_VALUE,
             flag: 1,
             bounce: true
-        }(address(this));
+        }(_getCollection());
     }
 
     function _destroyIndex(address collection, address owner, address gasReceiver) private view {

@@ -15,7 +15,12 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4 {
     bool public _ready;
 
 
-    constructor(address owner, address manager, TvmCell indexCode, address creator, address storage_) public {
+    modifier onlyManager() {
+        require(msg.sender == _manager, ErrorCodes.IS_NOT_MANAGER);
+        _;
+    }
+
+    constructor(address owner, address manager, TvmCell indexCode, address storage_, address creator) public {
         _onInit4_3(owner, manager, indexCode);
         _onInit4_4(owner, manager, storage_);
         IMintCallback(msg.sender).onMint{
@@ -31,11 +36,15 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4 {
         gasReceiver.transfer({value: 0, flag: 64, bounce: false});
     }
 
-    function changeOwner(address newOwner, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override(NFTBase4_1, NFTBase4_3) {
+    function changeOwner(address newOwner, address sendGasTo, mapping(address => CallbackParams) callbacks) public override(NFTBase4_1, NFTBase4_3) onlyManager {
         NFTBase4_3.changeOwner(newOwner, sendGasTo, callbacks);
     }
 
-    function transfer(address to, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override(NFTBase4_1, NFTBase4_3) {
+    function changeManager(address newManager, address sendGasTo, mapping(address => CallbackParams) callbacks) public override onlyManager {
+        super.changeManager(newManager, sendGasTo, callbacks);
+    }
+
+    function transfer(address to, address sendGasTo, mapping(address => CallbackParams) callbacks) public override(NFTBase4_1, NFTBase4_3) onlyManager {
         NFTBase4_3.transfer(to, sendGasTo, callbacks);
     }
 

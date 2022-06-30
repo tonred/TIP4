@@ -101,7 +101,7 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, IMintCall
             value: Gas.DEPLOY_NFT_VALUE,
             flag: 1,
             bounce: true
-        }(owner, manager, _indexCode, creator, storage_);
+        }(owner, manager, _indexCode, storage_, creator);
     }
 
     function _deployStorage(address nft) private view returns (address) {

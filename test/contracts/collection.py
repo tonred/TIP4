@@ -2,30 +2,15 @@ from tonos_ts4 import ts4
 
 from contracts.nft import NFT
 from contracts.utils.wallet import Wallet
+from utils.base_contract import BaseContract
 from utils.options import Options
 from utils.solidity_function import solidity_function, solidity_getter
-from utils.utils import random_address
 
 
-class Collection(ts4.BaseContract):
+class Collection(BaseContract):
 
-    def __init__(self, admin: Wallet):
-        nft_code = ts4.load_code_cell('SampleFullNFT')
-        index_basis_code = ts4.load_code_cell('IndexBasis')
-        index_code = ts4.load_code_cell('Index')
-        sample_storage_code = ts4.load_code_cell('SampleFullStorage')
-        super().__init__(
-            'SampleFullCollection',
-            ctor_params={
-                'nftCode': nft_code,
-                'indexBasisCode': index_basis_code,
-                'indexCode': index_code,
-                'storageCode': sample_storage_code,
-                'admin': admin.address,
-            },
-            nickname='Collection',
-            override_address=random_address(),
-        )
+    def __init__(self, address: ts4.Address, admin: Wallet):
+        super().__init__(address, abi_name='SampleFullCollection')
         self.admin = admin
 
     # TIP6

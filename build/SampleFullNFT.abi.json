@@ -9,8 +9,8 @@
 				{"name":"owner","type":"address"},
 				{"name":"manager","type":"address"},
 				{"name":"indexCode","type":"cell"},
-				{"name":"creator","type":"address"},
-				{"name":"storage_","type":"address"}
+				{"name":"storage_","type":"address"},
+				{"name":"creator","type":"address"}
 			],
 			"outputs": [
 			]
@@ -27,6 +27,16 @@
 			"name": "changeOwner",
 			"inputs": [
 				{"name":"newOwner","type":"address"},
+				{"name":"sendGasTo","type":"address"},
+				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
+			],
+			"outputs": [
+			]
+		},
+		{
+			"name": "changeManager",
+			"inputs": [
+				{"name":"newManager","type":"address"},
 				{"name":"sendGasTo","type":"address"},
 				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
 			],
@@ -114,16 +124,6 @@
 				{"name":"owner","type":"address"},
 				{"name":"manager","type":"address"},
 				{"name":"collection","type":"address"}
-			]
-		},
-		{
-			"name": "changeManager",
-			"inputs": [
-				{"name":"newManager","type":"address"},
-				{"name":"sendGasTo","type":"address"},
-				{"components":[{"name":"value","type":"uint128"},{"name":"payload","type":"cell"}],"name":"callbacks","type":"map(address,tuple)"}
-			],
-			"outputs": [
 			]
 		},
 		{
