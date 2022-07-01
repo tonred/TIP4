@@ -77,6 +77,11 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
 
     function _getCollection() internal view virtual returns (address);
 
+    function _onBurn(address gasReceiver) internal virtual {
+        emit NftBurned(_getId(), _owner, _manager, _getCollection());
+        selfdestruct(gasReceiver);
+    }
+
     function _reserve() internal view {
         tvm.rawReserve(0, 4);  // todo storage fee reserve
     }

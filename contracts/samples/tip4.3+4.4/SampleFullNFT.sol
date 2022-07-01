@@ -62,13 +62,12 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4 {
 
     function burn(address gasReceiver) public {
         require(msg.sender == _collection, ErrorCodes.IS_NOT_COLLECTION);
-        _destroyIndexes(_owner, gasReceiver);
         ISampleFullCollection(msg.sender).onBurn{
             value: 0,
             flag: 64,
             bounce: false
         }(_id, _owner, _manager);
-        selfdestruct(gasReceiver);
+        _onBurn(gasReceiver);
     }
 
 
@@ -78,6 +77,10 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4 {
 
     function _getCollection() internal view override(NFTBase4_1, NFTBase4_3) returns (address) {
         return _collection;
+    }
+
+    function _onBurn(address gasReceiver) internal override(NFTBase4_1, NFTBase4_3) {
+        NFTBase4_3._onBurn(gasReceiver);
     }
 
 }

@@ -54,6 +54,11 @@ abstract contract NFTBase4_3 is NFTBase4_1, TIP4_3NFT {
 
     function _getCollection() internal view virtual override returns (address);
 
+    function _onBurn(address gasReceiver) internal virtual override {
+        _destroyIndexes(_owner, gasReceiver);
+        super._onBurn(gasReceiver);
+    }
+
     function _updateIndexes(address oldOwner, address newOwner, address gasReceiver) internal view {
         _deployIndexes(newOwner);
         _destroyIndexes(oldOwner, gasReceiver);
