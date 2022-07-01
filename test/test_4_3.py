@@ -46,6 +46,24 @@ class Test43(unittest.TestCase):
         index_2 = Index(index_2_address)
         self.assertGreater(index_2.balance, 0, 'Index (2) is not exists')
 
+    def test_nft_update_index(self):
+        index_1_before_address = self.nft.resolve_index(ZERO_ADDRESS, self.nft_owner)
+        index_1_before = Index(index_1_before_address)
+        index_2_before_address = self.nft.resolve_index(self.collection, self.nft_owner)
+        index_2_before = Index(index_2_before_address)
+
+        self.nft_owner = self.deployer.create_wallet()
+        self.nft.change_owner(self.nft_owner, self.nft_owner, dict())
+
+        self.assertEqual(index_1_before.balance, None, 'Index (1) before is not destroyed')
+        self.assertEqual(index_2_before.balance, None, 'Index (2) before is not destroyed')
+        index_1_after_address = self.nft.resolve_index(ZERO_ADDRESS, self.nft_owner)
+        index_1_after = Index(index_1_after_address)
+        index_2_after_address = self.nft.resolve_index(self.collection, self.nft_owner)
+        index_2_after = Index(index_2_after_address)
+        self.assertGreater(index_1_after.balance, 0, 'Index (1) after is not deployed')
+        self.assertGreater(index_2_after.balance, 0, 'Index (2) after is not deployed')
+
     def test_index_basis(self):
         index_basis_address = self.collection.resolve_index_basis()
         index_basis = IndexBasis(index_basis_address)

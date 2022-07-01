@@ -6,7 +6,7 @@ pragma AbiHeader pubkey;
 
 import "../../implementation/4_3/NFTBase4_3.sol";
 import "../../implementation/4_4/NFTBase4_4.sol";
-import "../interfaces/IMintCallback.sol";
+import "../interfaces/ISampleFullCollection.sol";
 import "../utils/ErrorCodes.sol";
 import "../utils/Gas.sol";
 
@@ -28,7 +28,7 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4 {
         require(msg.sender == _collection, ErrorCodes.IS_NOT_COLLECTION);
         _onInit4_3(owner, manager, indexCode);
         _onInit4_4(owner, manager, storage_);
-        IMintCallback(msg.sender).onMint{
+        ISampleFullCollection(msg.sender).onMint{
             value: Gas.ON_MINT_VALUE,
             flag: 1,
             bounce: false
@@ -60,10 +60,15 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4 {
         );
     }
 
-
-    function burn(address gasReceiver_) public view responsible returns (uint256 id, address owner, address manager, address gasReceiver) {
+    function burn(address gasReceiver) public {
         require(msg.sender == _collection, ErrorCodes.IS_NOT_COLLECTION);
-        return {value: 0, flag: 128 + 2, bounce: false} (_getId(), _owner, _manager, gasReceiver_);
+        _destroyIndexes(_owner, gasReceiver);
+        ISampleFullCollection(msg.sender).onBurn{
+            value: 0,
+            flag: 64,
+            bounce: false
+        }(_id, _owner, _manager);
+        selfdestruct(gasReceiver);
     }
 
 

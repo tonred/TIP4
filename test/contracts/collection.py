@@ -84,5 +84,5 @@ class Collection(BaseContract, TIP6):
         return NFT(nft_address, owner, manager)
 
     @solidity_function(send_as='admin')
-    def burn(self, name: str, options: Options = Options(5)):
+    def burn(self, name: str, gas_receiver: ts4.Address, options: Options = Options(5)):
         pass

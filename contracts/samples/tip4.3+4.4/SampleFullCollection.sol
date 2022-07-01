@@ -13,7 +13,7 @@ import "SampleFullStorage.sol";
 import "@broxus/contracts/contracts/utils/RandomNonce.sol";
 
 
-contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, IMintCallback, RandomNonce {
+contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, ISampleFullCollection, RandomNonce {
     string constant STORAGE_MIME_TYPE = "image/png";
     string constant STORAGE_CONTENT_ENCODING = "zstd";
 
@@ -80,13 +80,13 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, IMintCall
     function burn(string name, address gasReceiver) public view onlyAdmin {
         uint256 id = tvm.hash(name);
         address nft = _nftAddress(id);
-        SampleFullNFT(nft).burn{value: 0, flag: 64, bounce: true, callback: onBurn}(gasReceiver);
+        SampleFullNFT(nft).burn{value: 0, flag: 64, bounce: true}(gasReceiver);
     }
 
-    function onBurn(uint256 id, address owner, address manager, address gasReceiver) public onlyNFT(id) {
+    function onBurn(uint256 id, address owner, address manager) public override onlyNFT(id) {
         _reserve();
         _onBurn(id, msg.sender, owner, manager);
-        IAdmin(gasReceiver).onBurn{
+        IAdmin(_admin).onBurn{
             value: 0,
             flag: 128,
             bounce: false
@@ -95,7 +95,7 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, IMintCall
 
 
     function _reserve() internal view {
-        tvm.rawReserve(address(this).balance - msg.value, 2);  // todo storage fee reserve
+        tvm.rawReserve(0, 4);  // todo storage fee reserve
     }
 
     function _mint(uint256 id, address owner, address manager, address creator, address storage_) private view {

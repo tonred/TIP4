@@ -78,7 +78,7 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
     function _getCollection() internal view virtual returns (address);
 
     function _reserve() internal view {
-        tvm.rawReserve(address(this).balance - msg.value, 2);  // todo storage fee reserve
+        tvm.rawReserve(0, 4);  // todo storage fee reserve
     }
 
     function _sendCallbacks(address sendGasTo, mapping(address => CallbackParams) callbacks, TvmCell baseBody) internal pure {
