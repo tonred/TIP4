@@ -32,8 +32,6 @@ class TestOther(unittest.TestCase):
         storage = Storage(storage_address)
         self.assertEqual(storage.balance, ts4.GRAM // 2, 'Wrong storage balance')
 
-        # todo callback value is transfered check
-
     def test_burn(self):
         nft, nft_owner = self.deployer.mint(NFT_NAME)
         index_1_address = nft.resolve_index(ZERO_ADDRESS, nft_owner)

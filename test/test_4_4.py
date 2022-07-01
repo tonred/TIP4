@@ -61,9 +61,6 @@ class Test44(unittest.TestCase):
         }, private_key=self.admin.private_key_)
         ts4.dispatch_messages()
 
-    # todo test fill
-    # todo test update index 4.3
-
     def _check_code_and_hash(self, code: ts4.Cell, code_hash: int, contract_filename: str):
         # code
         expected_code = ts4.load_code_cell(contract_filename)

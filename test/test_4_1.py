@@ -32,7 +32,7 @@ class Test41(unittest.TestCase):
         self._test_tip6(self.nft, [0x3204EC29, 0x78084F7E, 0x4DF6250B, 0x009DC09A])
         storage_address = self.nft.get_storage()
         storage = Storage(storage_address)
-        self._test_tip6(storage, [0x3204EC29, 0x204D6296])  # todo 0x204D6296 instead of 0x4855B0B8
+        self._test_tip6(storage, [0x3204EC29, 0x204D6296])
 
     def test_collection(self):
         # total supply
