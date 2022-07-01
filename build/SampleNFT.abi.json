@@ -47,13 +47,9 @@
 		{
 			"name": "burn",
 			"inputs": [
-				{"name":"answerId","type":"uint32"},
 				{"name":"gasReceiver","type":"address"}
 			],
 			"outputs": [
-				{"name":"id","type":"uint256"},
-				{"name":"owner","type":"address"},
-				{"name":"manager","type":"address"}
 			]
 		},
 		{
