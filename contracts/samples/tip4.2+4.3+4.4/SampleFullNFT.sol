@@ -4,19 +4,20 @@ pragma AbiHeader time;
 pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
+import "../../implementation/4_2/JSONMetadataBase.sol";
 import "../../implementation/4_3/NFTBase4_3.sol";
 import "../../implementation/4_4/NFTBase4_4.sol";
-import "../interfaces/ISampleFullCollection.sol";
+import "../interfaces/ISampleCollection.sol";
 import "../utils/ErrorCodes.sol";
 import "../utils/Gas.sol";
 
 
-contract SampleFullNFT is NFTBase4_3, NFTBase4_4 {
+contract SampleFullNFT is NFTBase4_3, NFTBase4_4, JSONMetadataBase {
 
     uint256 public static _id;
     address public static _collection;
 
-    bool public _ready;
+    bool public _isStorageReady;
 
 
     modifier onlyManager() {
@@ -24,11 +25,12 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4 {
         _;
     }
 
-    constructor(address owner, address manager, TvmCell indexCode, address storage_, address creator) public {
+    constructor(address owner, address manager, TvmCell indexCode, address storage_, string json, address creator) public {
         require(msg.sender == _collection, ErrorCodes.IS_NOT_COLLECTION);
         _onInit4_3(owner, manager, indexCode);
         _onInit4_4(owner, manager, storage_);
-        ISampleFullCollection(msg.sender).onMint{
+        _onInit4_2(json);
+        ISampleCollection(msg.sender).onMint{
             value: Gas.ON_MINT_VALUE,
             flag: 1,
             bounce: false
@@ -37,32 +39,47 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4 {
 
 
     function onStorageFillComplete(address gasReceiver) public override {
-        _ready = true;
+        _isStorageReady = true;
         gasReceiver.transfer({value: 0, flag: 64, bounce: false});
     }
 
-    function changeOwner(address newOwner, address sendGasTo, mapping(address => CallbackParams) callbacks) public override(NFTBase4_1, NFTBase4_3) onlyManager {
+    function changeOwner(
+        address newOwner,
+        address sendGasTo,
+        mapping(address => CallbackParams) callbacks
+    ) public override(NFTBase4_1, NFTBase4_3) onlyManager {
         NFTBase4_3.changeOwner(newOwner, sendGasTo, callbacks);
     }
 
-    function changeManager(address newManager, address sendGasTo, mapping(address => CallbackParams) callbacks) public override onlyManager {
+    function changeManager(
+        address newManager,
+        address sendGasTo,
+        mapping(address => CallbackParams) callbacks
+    ) public override onlyManager {
         super.changeManager(newManager, sendGasTo, callbacks);
     }
 
-    function transfer(address to, address sendGasTo, mapping(address => CallbackParams) callbacks) public override(NFTBase4_1, NFTBase4_3) onlyManager {
+    function transfer(
+        address to,
+        address sendGasTo,
+        mapping(address => CallbackParams) callbacks
+    ) public override(NFTBase4_1, NFTBase4_3) onlyManager {
         NFTBase4_3.transfer(to, sendGasTo, callbacks);
     }
 
-    function supportsInterface(bytes4 interfaceID) public view responsible override(NFTBase4_3, NFTBase4_4) returns (bool support) {
+    function supportsInterface(
+        bytes4 interfaceID
+    ) public view responsible override(NFTBase4_3, NFTBase4_4, JSONMetadataBase) returns (bool support) {
         return {value: 0, flag: 64, bounce: false} (
             NFTBase4_3.supportsInterface(interfaceID) ||
-            NFTBase4_4.supportsInterface(interfaceID)
+            NFTBase4_4.supportsInterface(interfaceID) ||
+            JSONMetadataBase.supportsInterface(interfaceID)
         );
     }
 
     function burn(address gasReceiver) public {
         require(msg.sender == _collection, ErrorCodes.IS_NOT_COLLECTION);
-        ISampleFullCollection(msg.sender).onBurn{
+        ISampleCollection(msg.sender).onBurn{
             value: 0,
             flag: 64,
             bounce: false

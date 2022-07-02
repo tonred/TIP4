@@ -5,17 +5,15 @@ pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
 import "../../implementation/4_3/NFTBase4_3.sol";
-import "../interfaces/ISampleFullCollection.sol";
+import "../interfaces/ISampleCollection.sol";
 import "../utils/ErrorCodes.sol";
 import "../utils/Gas.sol";
 
 
-contract SampleNFT is NFTBase4_3 {
+contract SampleMinNFT is NFTBase4_3 {
 
     uint256 public static _id;
     address public static _collection;
-
-    bool public _ready;
 
 
     modifier onlyManager() {
@@ -26,12 +24,13 @@ contract SampleNFT is NFTBase4_3 {
     constructor(address owner, address manager, TvmCell indexCode, address creator) public {
         require(msg.sender == _collection, ErrorCodes.IS_NOT_COLLECTION);
         _onInit4_3(owner, manager, indexCode);
-        ISampleFullCollection(msg.sender).onMint{
+        ISampleCollection(msg.sender).onMint{
             value: Gas.ON_MINT_VALUE,
             flag: 1,
             bounce: false
         }(_id, _owner, _manager, creator);
     }
+
 
     function changeOwner(address newOwner, address sendGasTo, mapping(address => CallbackParams) callbacks) public override onlyManager {
         super.changeOwner(newOwner, sendGasTo, callbacks);
@@ -47,7 +46,7 @@ contract SampleNFT is NFTBase4_3 {
 
     function burn(address gasReceiver) public {
         require(msg.sender == _collection, ErrorCodes.IS_NOT_COLLECTION);
-        ISampleFullCollection(msg.sender).onBurn{
+        ISampleCollection(msg.sender).onBurn{
             value: 0,
             flag: 64,
             bounce: false

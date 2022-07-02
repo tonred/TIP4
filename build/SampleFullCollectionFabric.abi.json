@@ -18,6 +18,7 @@
 				{"name":"indexBasisCode","type":"cell"},
 				{"name":"indexCode","type":"cell"},
 				{"name":"storageCode","type":"cell"},
+				{"name":"json","type":"string"},
 				{"name":"admin","type":"address"},
 				{"name":"pubkey","type":"uint256"}
 			],

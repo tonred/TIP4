@@ -5,17 +5,14 @@ pragma AbiHeader expire;
 pragma AbiHeader pubkey;
 
 import "../../implementation/4_3/CollectionBase4_3.sol";
-import "../../implementation/4_4/CollectionBase4_4.sol";
 import "../interfaces/IAdmin.sol";
-import "SampleFullNFT.sol";
-import "SampleFullStorage.sol";
+import "SampleMinNFT.sol";
 
+import "@broxus/contracts/contracts/utils/CheckPubKey.sol";
 import "@broxus/contracts/contracts/utils/RandomNonce.sol";
 
 
-contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, ISampleFullCollection, RandomNonce {
-    string constant STORAGE_MIME_TYPE = "image/png";
-    string constant STORAGE_CONTENT_ENCODING = "zstd";
+contract SampleMinCollection is CollectionBase4_3, ISampleCollection, CheckPubKey, RandomNonce {
 
     address public _admin;
 
@@ -30,9 +27,9 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, ISampleFu
         _;
     }
 
-    constructor(TvmCell nftCode, TvmCell indexBasisCode, TvmCell indexCode, TvmCell storageCode, address admin) public {
+    constructor(TvmCell nftCode, TvmCell indexBasisCode, TvmCell indexCode, address admin) public checkPubKey {
+        tvm.accept();
         _onInit4_3(nftCode, indexBasisCode, indexCode);
-        _onInit4_4(nftCode, storageCode);
         _admin = admin;
     }
 
@@ -41,19 +38,6 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, ISampleFu
         return {value: 0, flag: 64, bounce: false} _nftAddress(id);
     }
 
-    function resolveStorage(address nft) public view responsible override returns (address addr) {
-        TvmCell stateInit = _buildStorageStateInit(nft);
-        return {value: 0, flag: 64, bounce: false} address(tvm.hash(stateInit));
-    }
-
-    function supportsInterface(bytes4 interfaceID) public view responsible override(CollectionBase4_3, CollectionBase4_4) returns (bool support) {
-        return {value: 0, flag: 64, bounce: false} (
-            CollectionBase4_3.supportsInterface(interfaceID) ||
-            CollectionBase4_4.supportsInterface(interfaceID)
-        );
-    }
-
-
     function nftAddressByName(string name) public view responsible returns (address nft) {
         return {value: 0, flag: 64, bounce: false} _nftAddress(tvm.hash(name));
     }
@@ -61,9 +45,7 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, ISampleFu
     function mint(string name, address owner, address manager) public view onlyAdmin {
         _reserve();
         uint256 id = tvm.hash(name);
-        address nft = _nftAddress(id);
-        address storage_ = _deployStorage(nft);
-        _mint(id, owner, manager, msg.sender, storage_);
+        _mint(id, owner, manager, msg.sender);
         msg.sender.transfer({value: 0, flag: 128, bounce: false});
     }
 
@@ -80,7 +62,7 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, ISampleFu
     function burn(string name, address gasReceiver) public view onlyAdmin {
         uint256 id = tvm.hash(name);
         address nft = _nftAddress(id);
-        SampleFullNFT(nft).burn{value: 0, flag: 64, bounce: true}(gasReceiver);
+        SampleMinNFT(nft).burn{value: 0, flag: 64, bounce: true}(gasReceiver);
     }
 
     function onBurn(uint256 id, address owner, address manager) public override onlyNFT(id) {
@@ -98,24 +80,14 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, ISampleFu
         tvm.rawReserve(0, 4);  // todo storage fee reserve
     }
 
-    function _mint(uint256 id, address owner, address manager, address creator, address storage_) private view {
+    function _mint(uint256 id, address owner, address manager, address creator) private view {
         TvmCell stateInit = _buildNFTStateInit(id);
-        new SampleFullNFT{
+        new SampleMinNFT{
             stateInit: stateInit,
             value: Gas.DEPLOY_NFT_VALUE,
             flag: 1,
             bounce: true
-        }(owner, manager, _indexCode, storage_, creator);
-    }
-
-    function _deployStorage(address nft) private view returns (address) {
-        TvmCell stateInit = _buildStorageStateInit(nft);
-        return new SampleFullStorage{
-            stateInit: stateInit,
-            value: Gas.DEPLOY_STORAGE_VALUE,
-            flag: 1,
-            bounce: true
-        }(STORAGE_MIME_TYPE, STORAGE_CONTENT_ENCODING);
+        }(owner, manager, _indexCode, creator);
     }
 
     function _nftAddress(uint256 id) private view returns (address) {
@@ -125,24 +97,12 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, ISampleFu
 
     function _buildNFTStateInit(uint256 id) private view returns (TvmCell) {
         return tvm.buildStateInit({
-            contr: SampleFullNFT,
+            contr: SampleMinNFT,
             varInit: {
                 _id: id,
                 _collection: address(this)
             },
             code: _nftCode
-        });
-    }
-
-    function _buildStorageStateInit(address nft) private view returns (TvmCell) {
-        return tvm.buildStateInit({
-            contr: SampleFullStorage,
-            varInit: {
-                _nft: nft,
-                _collection: address(this)
-            },
-            code: _storageCode,
-            pubkey: tvm.pubkey()
         });
     }
 

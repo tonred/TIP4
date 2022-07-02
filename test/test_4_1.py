@@ -28,8 +28,10 @@ class Test41(unittest.TestCase):
         self.nft, _ = self.deployer.mint(NFT_NAME)
 
     def test_tip6(self):
-        self._test_tip6(self.collection, [0x3204EC29, 0x1217AAAB, 0x4387BBFB, 0x6302A6F8])
-        self._test_tip6(self.nft, [0x3204EC29, 0x78084F7E, 0x4DF6250B, 0x009DC09A])
+        collection_interfaces = [0x3204EC29, 0x1217AAAB, 0x24D7D5F5, 0x4387BBFB, 0x6302A6F8]  # 6, 4.1, 4.2, 4.3, 4.4
+        nft_interfaces = [0x3204EC29, 0x78084F7E, 0x24D7D5F5, 0x4DF6250B, 0x009DC09A]  # 6, 4.1, 4.2, 4.3, 4.4
+        self._test_tip6(self.collection, collection_interfaces)
+        self._test_tip6(self.nft, nft_interfaces)
         storage_address = self.nft.get_storage()
         storage = Storage(storage_address)
         self._test_tip6(storage, [0x3204EC29, 0x204D6296])
@@ -133,13 +135,14 @@ class Test41(unittest.TestCase):
         return callback_wallet.get_info_base(), new_wallet
 
     def _test_tip6(self, contract: Union[Collection, NFT, Storage], interfaces_ok: list):
+        contract_name = contract.name_
         for interface_id in interfaces_ok:
             supports = contract.supports_interface(interface_id)
-            self.assertEqual(supports, True, f'Interface {interface_id:x} must be supported for {contract.name_}')
+            self.assertEqual(supports, True, f'Interface {interface_id:x} must be supported for "{contract_name}"')
         interfaces_bad = [0xFFFFFFFF, 0x12345678]  # corner case and random case
         for interface_id in interfaces_bad:
             supports = contract.supports_interface(interface_id)
-            self.assertEqual(supports, False, f'Interface {interface_id:x} must not be supported for {contract.name_}')
+            self.assertEqual(supports, False, f'Interface {interface_id:x} must not be supported for "{contract_name}"')
 
     def _check_code_and_hash(self, code: ts4.Cell, code_hash: int, contract_filename: str):
         # code

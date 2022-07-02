@@ -20,9 +20,12 @@ const main = async () => {
       indexBasisCode: IndexBasis.code,
       indexCode: Index.code,
       storageCode: SampleFullStorage.code,
+      json: "{\"type\": \"Basic Collection\", \"name\": \"Test Collection\"}",
       admin: '0:0000000000000000000000000000000000000000000000000000000000000000',  // set admin address
     },
-    initParams: {},
+    initParams: {
+      // _randomNonce: 0,  // to use same address for collection
+    },
     keyPair
   }, locklift.utils.convertCrystal(5, 'nano'));
   await logContract(sample);

@@ -9,17 +9,7 @@
 				{"name":"owner","type":"address"},
 				{"name":"manager","type":"address"},
 				{"name":"indexCode","type":"cell"},
-				{"name":"storage_","type":"address"},
-				{"name":"json","type":"string"},
 				{"name":"creator","type":"address"}
-			],
-			"outputs": [
-			]
-		},
-		{
-			"name": "onStorageFillComplete",
-			"inputs": [
-				{"name":"gasReceiver","type":"address"}
 			],
 			"outputs": [
 			]
@@ -55,39 +45,11 @@
 			]
 		},
 		{
-			"name": "supportsInterface",
-			"inputs": [
-				{"name":"answerId","type":"uint32"},
-				{"name":"interfaceID","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"support","type":"bool"}
-			]
-		},
-		{
 			"name": "burn",
 			"inputs": [
 				{"name":"gasReceiver","type":"address"}
 			],
 			"outputs": [
-			]
-		},
-		{
-			"name": "getJson",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"json","type":"string"}
-			]
-		},
-		{
-			"name": "getStorage",
-			"inputs": [
-				{"name":"answerId","type":"uint32"}
-			],
-			"outputs": [
-				{"name":"addr","type":"address"}
 			]
 		},
 		{
@@ -117,6 +79,16 @@
 			],
 			"outputs": [
 				{"name":"index","type":"address"}
+			]
+		},
+		{
+			"name": "supportsInterface",
+			"inputs": [
+				{"name":"answerId","type":"uint32"},
+				{"name":"interfaceID","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"support","type":"bool"}
 			]
 		},
 		{
@@ -156,22 +128,6 @@
 			]
 		},
 		{
-			"name": "_storage",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_storage","type":"address"}
-			]
-		},
-		{
-			"name": "_json",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_json","type":"string"}
-			]
-		},
-		{
 			"name": "_id",
 			"inputs": [
 			],
@@ -185,14 +141,6 @@
 			],
 			"outputs": [
 				{"name":"_collection","type":"address"}
-			]
-		},
-		{
-			"name": "_isStorageReady",
-			"inputs": [
-			],
-			"outputs": [
-				{"name":"_isStorageReady","type":"bool"}
 			]
 		}
 	],
@@ -249,10 +197,7 @@
 		{"name":"_owner","type":"address"},
 		{"name":"_manager","type":"address"},
 		{"name":"_indexCode","type":"cell"},
-		{"name":"_storage","type":"address"},
-		{"name":"_json","type":"string"},
 		{"name":"_id","type":"uint256"},
-		{"name":"_collection","type":"address"},
-		{"name":"_isStorageReady","type":"bool"}
+		{"name":"_collection","type":"address"}
 	]
 }

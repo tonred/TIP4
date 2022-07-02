@@ -12,8 +12,6 @@ from deployer import Deployer
 from utils.cell_hash import cell_hash
 from utils.utils import ZERO_ADDRESS
 
-CALLBACK_VALUE = ts4.GRAM
-
 
 class Test43(unittest.TestCase):
 

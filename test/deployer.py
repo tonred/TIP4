@@ -1,6 +1,6 @@
 from tonos_ts4 import ts4
 
-from config import BUILD_ARTIFACTS_PATH, VERBOSE
+from config import BUILD_ARTIFACTS_PATH, VERBOSE, NFT_JSON
 from contracts.fabric import Fabric
 from contracts.nft import NFT
 from contracts.utils.wallet import Wallet
@@ -17,7 +17,7 @@ class Deployer:
 
     def mint(self, name: str) -> (NFT, Wallet):
         owner = self.create_wallet()
-        nft = self.collection.mint(name, owner, owner)
+        nft = self.collection.mint(name, owner, owner, NFT_JSON)
         return nft, owner
 
     @staticmethod

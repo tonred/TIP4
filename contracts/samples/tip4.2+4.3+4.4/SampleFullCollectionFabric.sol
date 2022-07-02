@@ -22,6 +22,7 @@ contract SampleFullCollectionFabric is RandomNonce {
         TvmCell indexBasisCode,
         TvmCell indexCode,
         TvmCell storageCode,
+        string json,
         address admin,
         uint256 pubkey
     ) public {
@@ -31,7 +32,7 @@ contract SampleFullCollectionFabric is RandomNonce {
             value: 0,
             flag: 64,
             bounce: false
-        }(nftCode, indexBasisCode, indexCode, storageCode, admin);
+        }(nftCode, indexBasisCode, indexCode, storageCode, json, admin);
     }
 
     function _buildCollectionStateInit(uint256 pubkey) private view returns (TvmCell) {

@@ -2,14 +2,13 @@ from typing import Dict
 
 from tonos_ts4 import ts4
 
-from contracts.utils.tip6 import TIP6
+from contracts.utils.tip42 import TIP42
 from contracts.utils.wallet import Wallet
-from utils.base_contract import BaseContract
 from utils.options import Options
 from utils.solidity_function import solidity_function, solidity_getter
 
 
-class NFT(BaseContract, TIP6):
+class NFT(TIP42):
 
     def __init__(self, address: ts4.Address, owner: Wallet, manager: Wallet):
         super().__init__(address, abi_name='SampleFullNFT')
@@ -75,5 +74,5 @@ class NFT(BaseContract, TIP6):
         pass
 
     @solidity_getter()
-    def _ready(self) -> bool:
+    def _is_storage_ready(self) -> bool:
         pass

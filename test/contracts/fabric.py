@@ -1,5 +1,6 @@
 from tonos_ts4 import ts4
 
+from config import COLLECTION_JSON
 from contracts.collection import Collection
 from contracts.utils.wallet import Wallet
 from utils.options import Options
@@ -32,6 +33,7 @@ class Fabric(ts4.BaseContract):
             index_basis_code: ts4.Cell,
             index_code: ts4.Cell,
             storage_code: ts4.Cell,
+            json: str,
             admin: Wallet,
             pubkey: str,
             options: Options = Options(5),
@@ -45,5 +47,5 @@ class Fabric(ts4.BaseContract):
         index_code = ts4.load_code_cell('Index')
         storage_code = ts4.load_code_cell('SampleFullStorage')
         return self.create_collection(
-            admin, nft_code, index_basis_code, index_code, storage_code, admin, admin.public_key_
+            admin, nft_code, index_basis_code, index_code, storage_code, COLLECTION_JSON, admin, admin.public_key_
         )

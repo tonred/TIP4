@@ -8,8 +8,6 @@ from deployer import Deployer
 from utils.cell_hash import cell_hash
 from utils.utils import ZERO_ADDRESS
 
-CALLBACK_VALUE = ts4.GRAM
-
 
 class Test44(unittest.TestCase):
 
@@ -39,11 +37,11 @@ class Test44(unittest.TestCase):
         storage_address = self.nft.get_storage()
         storage = Storage(storage_address)
         # fill + onStorageFillComplete
-        self.assertEqual(self.nft._ready(), False, 'Wrong ready status before filling complete')
+        self.assertEqual(self.nft._is_storage_ready(), False, 'Wrong ready status before filling complete')
         self._fill_storage(storage, 0, 'chunk0', ZERO_ADDRESS)
         self._fill_storage(storage, 1, 'chunk1', ZERO_ADDRESS)
         self._fill_storage(storage, 2, 'chunk2', self.admin.address)
-        self.assertEqual(self.nft._ready(), True, 'Wrong ready status after filling complete')
+        self.assertEqual(self.nft._is_storage_ready(), True, 'Wrong ready status after filling complete')
         # get info
         info = storage.get_info()
         expected_content = {i: f'chunk{i}' for i in range(3)}

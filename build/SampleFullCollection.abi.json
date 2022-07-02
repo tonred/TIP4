@@ -10,6 +10,7 @@
 				{"name":"indexBasisCode","type":"cell"},
 				{"name":"indexCode","type":"cell"},
 				{"name":"storageCode","type":"cell"},
+				{"name":"json","type":"string"},
 				{"name":"admin","type":"address"}
 			],
 			"outputs": [
@@ -60,7 +61,8 @@
 			"inputs": [
 				{"name":"name","type":"string"},
 				{"name":"owner","type":"address"},
-				{"name":"manager","type":"address"}
+				{"name":"manager","type":"address"},
+				{"name":"json","type":"string"}
 			],
 			"outputs": [
 			]
@@ -93,6 +95,15 @@
 				{"name":"manager","type":"address"}
 			],
 			"outputs": [
+			]
+		},
+		{
+			"name": "getJson",
+			"inputs": [
+				{"name":"answerId","type":"uint32"}
+			],
+			"outputs": [
+				{"name":"json","type":"string"}
 			]
 		},
 		{
@@ -226,6 +237,14 @@
 			]
 		},
 		{
+			"name": "_json",
+			"inputs": [
+			],
+			"outputs": [
+				{"name":"_json","type":"string"}
+			]
+		},
+		{
 			"name": "_randomNonce",
 			"inputs": [
 			],
@@ -279,6 +298,7 @@
 		{"name":"_indexBasisCode","type":"cell"},
 		{"name":"_indexCode","type":"cell"},
 		{"name":"_storageCode","type":"cell"},
+		{"name":"_json","type":"string"},
 		{"name":"_randomNonce","type":"uint256"},
 		{"name":"_admin","type":"address"}
 	]

@@ -1,14 +1,13 @@
 from tonos_ts4 import ts4
 
 from contracts.nft import NFT
-from contracts.utils.tip6 import TIP6
+from contracts.utils.tip42 import TIP42
 from contracts.utils.wallet import Wallet
-from utils.base_contract import BaseContract
 from utils.options import Options
 from utils.solidity_function import solidity_function, solidity_getter
 
 
-class Collection(BaseContract, TIP6):
+class Collection(TIP42):
 
     def __init__(self, address: ts4.Address, admin: Wallet):
         super().__init__(address, abi_name='SampleFullCollection')
@@ -79,7 +78,7 @@ class Collection(BaseContract, TIP6):
         pass
 
     @solidity_function(send_as='admin')
-    def mint(self, name: str, owner: Wallet, manager: Wallet, options: Options = Options(5)) -> NFT:
+    def mint(self, name: str, owner: Wallet, manager: Wallet, json: str, options: Options = Options(5)) -> NFT:
         nft_address = self.nft_address_by_name(name)
         return NFT(nft_address, owner, manager)
 
