@@ -7,8 +7,8 @@ VERBOSE = os.getenv('TS4_VERBOSE', 'False').lower() == 'true'
 
 EMPTY_CELL = ts4.Cell(ts4.EMPTY_CELL)
 
-COLLECTION_JSON = '{"type": "Basic Collection", "name": "Test Collection"}'
-NFT_JSON = '{"type": "Basic NFT", "name": "Test NFT"}'
+COLLECTION_JSON = '{"type":"Basic Collection","name":"Test Collection"}'
+NFT_JSON = '{"type":"Basic NFT","name":"Test NFT"}'
 
 NFT_NAME = 'test'
 NFT_NAME_ID = 6731602802397666770938180957532378413873005850435560510872903601091507294727

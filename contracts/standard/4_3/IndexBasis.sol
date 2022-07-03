@@ -1,5 +1,7 @@
 // Compiled by TVMCompiler v0.58.2 and TVM-linker v0.14.51
 // Hash code without salting is 2359f897c9527073b1c95140c670089aa5ab825f5fd1bd453db803fbab47def2
+// IMPORTANT! Method `getInfo` has "bounce: true" in order to be compiled with new compiler version!
+//            Remove it to get code as in standard and get right hash code
 
 pragma ton-solidity >= 0.58.0;
 
@@ -22,7 +24,7 @@ contract IndexBasis is IIndexBasis {
     constructor() public onlyCollection {}
 
     function getInfo() override public view responsible returns (address collection) {
-        return {value: 0, flag: 64} _collection;
+        return {value: 0, flag: 64, bounce: true} _collection;
     }
 
     function destruct(address gasReceiver) override public onlyCollection {

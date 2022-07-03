@@ -20,7 +20,7 @@ const main = async () => {
       indexBasisCode: IndexBasis.code,
       indexCode: Index.code,
       storageCode: SampleFullStorage.code,
-      json: "{\"type\": \"Basic Collection\", \"name\": \"Test Collection\"}",
+      json: "{\"type\":\"Basic NFT\",\"name\":\"Test NFT\",\"description\":\"Just a Test NFT ^^\",\"preview\":{\"source\":\"https://everkit.org/everscale-branding-v1.0.0/icon/svg/everscale_icon_main_square.svg\",\"mimetype\":\"image/svg\"},\"files\":[],\"external_url\":\"https://github.com/everscale-org/docs/blob/main/src/standard/TIP-4/2.md#example\"}",
       admin: '0:0000000000000000000000000000000000000000000000000000000000000000',  // set admin address
     },
     initParams: {
