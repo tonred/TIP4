@@ -60,6 +60,9 @@ abstract contract NFTBase4_3 is NFTBase4_1, TIP4_3NFT {
     }
 
     function _updateIndexes(address oldOwner, address newOwner, address gasReceiver) internal view {
+        if (oldOwner == newOwner) {
+            return;
+        }
         _deployIndexes(newOwner);
         _destroyIndexes(oldOwner, gasReceiver);
     }

@@ -82,7 +82,7 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
         selfdestruct(gasReceiver);
     }
 
-    function _reserve() internal view {
+    function _reserve() internal view virtual {
         tvm.rawReserve(0, 4);  // todo storage fee reserve
     }
 
