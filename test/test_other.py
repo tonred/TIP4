@@ -49,3 +49,9 @@ class TestOther(unittest.TestCase):
         nft_owner_balance_delta = nft_owner_balance_after - nft_owner_balance_before
         nft_owner_balance_delta_expected = nft_balance_before + 2 * int(0.2 * ts4.GRAM)  # nft + 2 indexes
         self.assertEqual(nft_owner_balance_delta, nft_owner_balance_delta_expected, 'Wrong balance delta')
+
+    def test_mint_twice(self):
+        nft, _ = self.deployer.mint(NFT_NAME)
+        self.assertEqual(self.collection.total_supply(), 1, 'Wrong total supply')
+        nft, _ = self.deployer.mint(NFT_NAME)
+        self.assertEqual(self.collection.total_supply(), 1, 'Wrong total supply')
