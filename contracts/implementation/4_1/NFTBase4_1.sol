@@ -29,8 +29,7 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
     function changeOwner(address newOwner, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
         _reserve();
         address oldOwner = _owner;
-        _owner = newOwner;
-        emit OwnerChanged(oldOwner, newOwner);
+        _changeOwner(oldOwner, newOwner);
 
         uint32 functionId = tvm.functionId(INftChangeOwner.onNftChangeOwner);
         TvmCell baseBody = abi.encode(functionId, _getId(), _manager, oldOwner, newOwner, _getCollection(), sendGasTo);
@@ -40,8 +39,7 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
     function changeManager(address newManager, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
         _reserve();
         address oldManager = _manager;
-        _manager = newManager;
-        emit ManagerChanged(oldManager, newManager);
+        _changeManager(oldManager, newManager);
 
         uint32 functionId = tvm.functionId(INftChangeManager.onNftChangeManager);
         TvmCell baseBody = abi.encode(functionId, _getId(), _owner, oldManager, newManager, _getCollection(), sendGasTo);
@@ -52,9 +50,8 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
         _reserve();
         address oldOwner = _owner;
         address oldManager = _manager;
-        _owner = _manager = to;
-        emit OwnerChanged(oldOwner, to);
-        emit ManagerChanged(oldManager, to);
+        _changeOwner(oldOwner, to);
+        _changeManager(oldManager, to);
 
         uint32 functionId = tvm.functionId(INftTransfer.onNftTransfer);
         TvmCell baseBody = abi.encode(functionId, _getId(), oldOwner, to, oldManager, to, _getCollection(), sendGasTo);
@@ -77,6 +74,16 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
 
     function _getCollection() internal view virtual returns (address);
 
+    function _changeOwner(address oldOwner, address newOwner) internal virtual {
+        emit OwnerChanged(oldOwner, newOwner);
+        _owner = newOwner;
+    }
+
+    function _changeManager(address oldManager, address newManager) internal virtual {
+        emit ManagerChanged(oldManager, newManager);
+        _manager = newManager;
+    }
+
     function _onBurn(address gasReceiver) internal virtual {
         emit NftBurned(_getId(), _owner, _manager, _getCollection());
         selfdestruct(gasReceiver);
@@ -94,7 +101,7 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
         sendGasTo.transfer({value: 0, flag: 128, bounce: false});
     }
 
-    function _appendToCell(TvmCell base, TvmCell last) private pure returns (TvmCell) {
+    function _appendToCell(TvmCell base, TvmCell last) internal pure returns (TvmCell) {
         TvmSlice slice = base.toSlice();
         TvmBuilder builder;
         if (base.depth() == 0) {

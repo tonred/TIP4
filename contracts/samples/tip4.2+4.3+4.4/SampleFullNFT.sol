@@ -43,28 +43,16 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4, JSONMetadataBase {
         gasReceiver.transfer({value: 0, flag: 64, bounce: false});
     }
 
-    function changeOwner(
-        address newOwner,
-        address sendGasTo,
-        mapping(address => CallbackParams) callbacks
-    ) public override(NFTBase4_1, NFTBase4_3) onlyManager {
-        NFTBase4_3.changeOwner(newOwner, sendGasTo, callbacks);
+    function changeOwner(address newOwner, address sendGasTo, mapping(address => CallbackParams) callbacks) public override onlyManager {
+        super.changeOwner(newOwner, sendGasTo, callbacks);
     }
 
-    function changeManager(
-        address newManager,
-        address sendGasTo,
-        mapping(address => CallbackParams) callbacks
-    ) public override onlyManager {
+    function changeManager(address newManager, address sendGasTo, mapping(address => CallbackParams) callbacks) public override onlyManager {
         super.changeManager(newManager, sendGasTo, callbacks);
     }
 
-    function transfer(
-        address to,
-        address sendGasTo,
-        mapping(address => CallbackParams) callbacks
-    ) public override(NFTBase4_1, NFTBase4_3) onlyManager {
-        NFTBase4_3.transfer(to, sendGasTo, callbacks);
+    function transfer(address to, address sendGasTo, mapping(address => CallbackParams) callbacks) public override onlyManager {
+        super.transfer(to, sendGasTo, callbacks);
     }
 
     function supportsInterface(
@@ -94,6 +82,10 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4, JSONMetadataBase {
 
     function _getCollection() internal view override(NFTBase4_1, NFTBase4_3) returns (address) {
         return _collection;
+    }
+
+    function _changeOwner(address oldOwner, address newOwner) internal override(NFTBase4_1, NFTBase4_3) {
+        NFTBase4_3._changeOwner(oldOwner, newOwner);
     }
 
     function _onBurn(address gasReceiver) internal override(NFTBase4_1, NFTBase4_3) {

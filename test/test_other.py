@@ -17,11 +17,11 @@ class TestOther(unittest.TestCase):
         self.deployer = Deployer()
         self.admin = self.deployer.admin
         self.collection = self.deployer.collection
-        # self.nft, self.nft_owner = self.deployer.mint(NFT_NAME)
 
     def test_mint(self):
         balance_admin_before = self.admin.balance
         nft, _ = self.deployer.mint(NFT_NAME)
+        self.assertEqual(self.collection.total_supply(), 1, 'Wrong total supply')
         balance_admin_after = self.admin.balance
         balance_admin_delta = balance_admin_before - balance_admin_after
         balance_admin_delta_expected = int((0.5 + 1.6 - 0.2) * ts4.GRAM)  # storage + mint - onMint
@@ -41,6 +41,7 @@ class TestOther(unittest.TestCase):
         nft_owner_balance_before = nft_owner.balance
         nft_balance_before = nft.balance
         self.collection.burn(NFT_NAME, nft_owner)
+        self.assertEqual(self.collection.total_supply(), 0, 'Wrong total supply')
         self.assertEqual(nft.balance, None, 'NFT is not destroyed')
         self.assertEqual(index_1.balance, None, 'Index (1) is not destroyed')
         self.assertEqual(index_2.balance, None, 'Index (2) is not destroyed')

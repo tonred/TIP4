@@ -32,16 +32,6 @@ abstract contract NFTBase4_3 is NFTBase4_1, TIP4_3NFT {
         return {value: 0, flag: 64, bounce: false} address(tvm.hash(stateInit));
     }
 
-    function changeOwner(address newOwner, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
-        _updateIndexes(_owner, newOwner, sendGasTo);
-        super.changeOwner(newOwner, sendGasTo, callbacks);
-    }
-
-    function transfer(address to, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
-        _updateIndexes(_owner, to, sendGasTo);
-        super.transfer(to, sendGasTo, callbacks);
-    }
-
     function supportsInterface(bytes4 interfaceID) public view responsible virtual override returns (bool support) {
         bytes4 tip43ID = (
             bytes4(tvm.functionId(this.indexCode)) ^
@@ -53,6 +43,11 @@ abstract contract NFTBase4_3 is NFTBase4_1, TIP4_3NFT {
 
 
     function _getCollection() internal view virtual override returns (address);
+
+    function _changeOwner(address oldOwner, address newOwner) internal virtual override {
+        _updateIndexes(oldOwner, newOwner, oldOwner);
+        super._changeOwner(oldOwner, newOwner);
+    }
 
     function _onBurn(address gasReceiver) internal virtual override {
         _destroyIndexes(_owner, gasReceiver);
