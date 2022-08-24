@@ -94,9 +94,11 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
     }
 
     function _sendCallbacks(address sendGasTo, mapping(address => CallbackParams) callbacks, TvmCell baseBody) internal pure {
-        for ((address recipient, CallbackParams params) : callbacks) {
-            TvmCell body = _appendToCell(baseBody, params.payload);
-            recipient.transfer({value: params.value, flag: 0, bounce: false, body: body});
+        if (!callbacks.empty()) {
+            for ((address recipient, CallbackParams params) : callbacks) {
+                TvmCell body = _appendToCell(baseBody, params.payload);
+                recipient.transfer({value: params.value, flag: 1, bounce: false, body: body});
+            }
         }
         sendGasTo.transfer({value: 0, flag: 128, bounce: false});
     }
