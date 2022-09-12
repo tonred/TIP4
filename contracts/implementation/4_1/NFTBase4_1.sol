@@ -31,9 +31,12 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
         address oldOwner = _owner;
         _changeOwner(oldOwner, newOwner);
 
-        uint32 functionId = tvm.functionId(INftChangeOwner.onNftChangeOwner);
-        TvmCell baseBody = abi.encode(functionId, _getId(), _manager, oldOwner, newOwner, _getCollection(), sendGasTo);
-        _sendCallbacks(sendGasTo, callbacks, baseBody);
+        if (!callbacks.empty()) {
+            uint32 functionId = tvm.functionId(INftChangeOwner.onNftChangeOwner);
+            TvmCell baseBody = abi.encode(functionId, _getId(), _manager, oldOwner, newOwner, _getCollection(), sendGasTo);
+            _sendCallbacks(callbacks, baseBody);
+        }
+        sendGasTo.transfer({value: 0, flag: 128, bounce: false});
     }
 
     function changeManager(address newManager, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
@@ -41,9 +44,12 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
         address oldManager = _manager;
         _changeManager(oldManager, newManager);
 
-        uint32 functionId = tvm.functionId(INftChangeManager.onNftChangeManager);
-        TvmCell baseBody = abi.encode(functionId, _getId(), _owner, oldManager, newManager, _getCollection(), sendGasTo);
-        _sendCallbacks(sendGasTo, callbacks, baseBody);
+        if (!callbacks.empty()) {
+            uint32 functionId = tvm.functionId(INftChangeManager.onNftChangeManager);
+            TvmCell baseBody = abi.encode(functionId, _getId(), _owner, oldManager, newManager, _getCollection(), sendGasTo);
+            _sendCallbacks(callbacks, baseBody);
+        }
+        sendGasTo.transfer({value: 0, flag: 128, bounce: false});
     }
 
     function transfer(address to, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
@@ -53,9 +59,12 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
         _changeOwner(oldOwner, to);
         _changeManager(oldManager, to);
 
-        uint32 functionId = tvm.functionId(INftTransfer.onNftTransfer);
-        TvmCell baseBody = abi.encode(functionId, _getId(), oldOwner, to, oldManager, to, _getCollection(), sendGasTo);
-        _sendCallbacks(sendGasTo, callbacks, baseBody);
+        if (!callbacks.empty()) {
+            uint32 functionId = tvm.functionId(INftTransfer.onNftTransfer);
+            TvmCell baseBody = abi.encode(functionId, _getId(), oldOwner, to, oldManager, to, _getCollection(), sendGasTo);
+            _sendCallbacks(callbacks, baseBody);
+        }
+        sendGasTo.transfer({value: 0, flag: 128, bounce: false});
     }
 
     function supportsInterface(bytes4 interfaceID) public view responsible virtual override returns (bool support) {
@@ -93,14 +102,11 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
         tvm.rawReserve(0, 4);  // todo storage fee reserve
     }
 
-    function _sendCallbacks(address sendGasTo, mapping(address => CallbackParams) callbacks, TvmCell baseBody) internal pure {
-        if (!callbacks.empty()) {
-            for ((address recipient, CallbackParams params) : callbacks) {
-                TvmCell body = _appendToCell(baseBody, params.payload);
-                recipient.transfer({value: params.value, flag: 1, bounce: false, body: body});
-            }
+    function _sendCallbacks(mapping(address => CallbackParams) callbacks, TvmCell baseBody) internal pure {
+        for ((address recipient, CallbackParams params) : callbacks) {
+            TvmCell body = _appendToCell(baseBody, params.payload);
+            recipient.transfer({value: params.value, flag: 1, bounce: false, body: body});
         }
-        sendGasTo.transfer({value: 0, flag: 128, bounce: false});
     }
 
     function _appendToCell(TvmCell base, TvmCell last) internal pure returns (TvmCell) {
