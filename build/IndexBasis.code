@@ -10,7 +10,7 @@ IFREF {
 GETGLOB 6
 THROWIF 51
 ENDS
-.loc ../contracts/standard/4_3/IndexBasis.sol, 17
+.loc ../contracts/standard/4_3/IndexBasis.sol, 19
 PUSHREF {
 	.blob x4d6574686f6420666f7220636f6c6c656374696f6e206f6e6c79
 }
@@ -18,7 +18,7 @@ GETGLOB 9
 GETGLOB 10
 SDEQ
 THROWARGIFNOT 101
-.loc ../contracts/standard/4_3/IndexBasis.sol, 18
+.loc ../contracts/standard/4_3/IndexBasis.sol, 20
 ACCEPT
 .loc ../contracts/standard/4_3/IndexBasis.sol, 0
 CALLREF {
@@ -35,7 +35,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/standard/4_3/IndexBasis.sol, 24
+.loc ../contracts/standard/4_3/IndexBasis.sol, 26
 LDU 32
 GETGLOB 4
 ROT
@@ -109,7 +109,7 @@ THROW 0
 CALL $getInfo_internal_macro$
 
 .macro getInfo_internal_macro
-.loc ../contracts/standard/4_3/IndexBasis.sol, 25
+.loc ../contracts/standard/4_3/IndexBasis.sol, 27
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -128,7 +128,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/standard/4_3/IndexBasis.sol, 28
+.loc ../contracts/standard/4_3/IndexBasis.sol, 30
 OVER
 PUSHCONT {
 	LDREF
@@ -153,7 +153,7 @@ THROW 0
 CALL $destruct_internal_macro$
 
 .macro destruct_internal_macro
-.loc ../contracts/standard/4_3/IndexBasis.sol, 17
+.loc ../contracts/standard/4_3/IndexBasis.sol, 19
 PUSHREF {
 	.blob x4d6574686f6420666f7220636f6c6c656374696f6e206f6e6c79
 }
@@ -161,9 +161,9 @@ GETGLOB 9
 GETGLOB 10
 SDEQ
 THROWARGIFNOT 101
-.loc ../contracts/standard/4_3/IndexBasis.sol, 18
+.loc ../contracts/standard/4_3/IndexBasis.sol, 20
 ACCEPT
-.loc ../contracts/standard/4_3/IndexBasis.sol, 29
+.loc ../contracts/standard/4_3/IndexBasis.sol, 31
 NEWC
 STSLICECONST x42_
 STSLICE

@@ -20,7 +20,7 @@ PUSHCONT {
 IF
 LDMSGADDR
 ENDS
-.loc ../contracts/standard/4_3/Index.sol, 21
+.loc ../contracts/standard/4_3/Index.sol, 23
 GETGLOB 1
 PUSHREF {
 	DUP
@@ -105,7 +105,7 @@ CALLREF {
 	}
 	IFELSE
 }
-.loc ../contracts/standard/4_3/Index.sol, 22
+.loc ../contracts/standard/4_3/Index.sol, 24
 PUSHREF {
 	.blob x53616c7420646f65736e277420636f6e7461696e20616e792076616c7565
 }
@@ -113,7 +113,7 @@ OVER
 ISNULL
 NOT
 THROWARGIFNOT 102
-.loc ../contracts/standard/4_3/Index.sol, 23
+.loc ../contracts/standard/4_3/Index.sol, 25
 DUP
 ISNULL
 THROWIF 63
@@ -123,24 +123,24 @@ LDMSGADDR
 LDMSGADDR
 DROP
 BLKDROP2 1, 2
-.loc ../contracts/standard/4_3/Index.sol, 27
+.loc ../contracts/standard/4_3/Index.sol, 29
 GETGLOB 9
 GETGLOB 10
 SDEQ
 THROWIFNOT 100
-.loc ../contracts/standard/4_3/Index.sol, 28
+.loc ../contracts/standard/4_3/Index.sol, 30
 ACCEPT
-.loc ../contracts/standard/4_3/Index.sol, 29
+.loc ../contracts/standard/4_3/Index.sol, 31
 OVER
 SETGLOB 11
-.loc ../contracts/standard/4_3/Index.sol, 30
+.loc ../contracts/standard/4_3/Index.sol, 32
 SETGLOB 12
-.loc ../contracts/standard/4_3/Index.sol, 31
+.loc ../contracts/standard/4_3/Index.sol, 33
 PARSEMSGADDR
 INDEX 3
 PLDU 256
 PUSHCONT {
-	.loc ../contracts/standard/4_3/Index.sol, 32
+	.loc ../contracts/standard/4_3/Index.sol, 34
 	DUP
 	SETGLOB 11
 	.loc ../contracts/standard/4_3/Index.sol, 0
@@ -162,7 +162,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/standard/4_3/Index.sol, 36
+.loc ../contracts/standard/4_3/Index.sol, 38
 LDU 32
 GETGLOB 4
 ROT
@@ -252,7 +252,7 @@ THROW 0
 CALL $getInfo_internal_macro$
 
 .macro getInfo_internal_macro
-.loc ../contracts/standard/4_3/Index.sol, 41
+.loc ../contracts/standard/4_3/Index.sol, 43
 GETGLOB 4
 PUSHINT 0
 SETINDEXQ 2
@@ -273,7 +273,7 @@ ISNULL
 IFREF {
 	CALL $c4_to_c7$
 }
-.loc ../contracts/standard/4_3/Index.sol, 48
+.loc ../contracts/standard/4_3/Index.sol, 50
 OVER
 PUSHCONT {
 	LDREF
@@ -298,7 +298,7 @@ THROW 0
 CALL $destruct_internal_macro$
 
 .macro destruct_internal_macro
-.loc ../contracts/standard/4_3/Index.sol, 49
+.loc ../contracts/standard/4_3/Index.sol, 51
 PUSHREF {
 	.blob x4d6574686f6420666f72204e4654206f6e6c79
 }
@@ -306,7 +306,7 @@ GETGLOB 9
 GETGLOB 10
 SDEQ
 THROWARGIFNOT 101
-.loc ../contracts/standard/4_3/Index.sol, 50
+.loc ../contracts/standard/4_3/Index.sol, 52
 NEWC
 STSLICECONST x42_
 STSLICE
