@@ -77,6 +77,7 @@ contract SampleMinCollection is CollectionBase4_3, ISampleCollection, CheckPubKe
 
 
     function _reserve() internal view {
+        _admin;  // see explanation in `NFTBase4_1._reserve`
         tvm.rawReserve(0, 4);  // todo storage fee reserve
     }
 

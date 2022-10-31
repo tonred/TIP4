@@ -100,6 +100,7 @@ contract SampleFullCollection is CollectionBase4_3, CollectionBase4_4, JSONMetad
 
 
     function _reserve() internal view {
+        _admin;  // see explanation in `NFTBase4_1._reserve`
         tvm.rawReserve(0, 4);  // todo storage fee reserve
     }
 

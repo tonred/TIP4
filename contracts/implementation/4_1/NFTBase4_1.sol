@@ -29,7 +29,7 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
     function changeOwner(address newOwner, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
         _reserve();
         address oldOwner = _owner;
-        _changeOwner(oldOwner, newOwner);
+        _changeOwner(newOwner);
 
         if (!callbacks.empty()) {
             uint32 functionId = tvm.functionId(INftChangeOwner.onNftChangeOwner);
@@ -42,7 +42,7 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
     function changeManager(address newManager, address sendGasTo, mapping(address => CallbackParams) callbacks) public virtual override {
         _reserve();
         address oldManager = _manager;
-        _changeManager(oldManager, newManager);
+        _changeManager(newManager);
 
         if (!callbacks.empty()) {
             uint32 functionId = tvm.functionId(INftChangeManager.onNftChangeManager);
@@ -56,8 +56,7 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
         _reserve();
         address oldOwner = _owner;
         address oldManager = _manager;
-        _changeOwner(oldOwner, to);
-        _changeManager(oldManager, to);
+        _transfer(to);
 
         if (!callbacks.empty()) {
             uint32 functionId = tvm.functionId(INftTransfer.onNftTransfer);
@@ -83,14 +82,19 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
 
     function _getCollection() internal view virtual returns (address);
 
-    function _changeOwner(address oldOwner, address newOwner) internal virtual {
-        emit OwnerChanged(oldOwner, newOwner);
+    function _changeOwner(address newOwner) internal virtual {
+        emit OwnerChanged(_owner, newOwner);
         _owner = newOwner;
     }
 
-    function _changeManager(address oldManager, address newManager) internal virtual {
-        emit ManagerChanged(oldManager, newManager);
+    function _changeManager(address newManager) internal virtual {
+        emit ManagerChanged(_manager, newManager);
         _manager = newManager;
+    }
+
+    function _transfer(address to) internal virtual {
+        _changeOwner(to);
+        _changeManager(to);
     }
 
     function _onBurn(address gasReceiver) internal virtual {
@@ -99,6 +103,9 @@ abstract contract NFTBase4_1 is TIP4_1NFT, TIP6 {
     }
 
     function _reserve() internal view virtual {
+        // This function is `view` in order to compile with compiler v0.58.2
+        // Moreover, user can change implementation and relay on contract's variable in reserve
+        _owner;  // in order ignore "Function state mutability can be restricted to pure" warning
         tvm.rawReserve(0, 4);  // todo storage fee reserve
     }
 

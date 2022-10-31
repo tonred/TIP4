@@ -84,8 +84,8 @@ contract SampleFullNFT is NFTBase4_3, NFTBase4_4, JSONMetadataBase {
         return _collection;
     }
 
-    function _changeOwner(address oldOwner, address newOwner) internal override(NFTBase4_1, NFTBase4_3) {
-        NFTBase4_3._changeOwner(oldOwner, newOwner);
+    function _changeOwner(address newOwner) internal override(NFTBase4_1, NFTBase4_3) {
+        NFTBase4_3._changeOwner(newOwner);
     }
 
     function _onBurn(address gasReceiver) internal override(NFTBase4_1, NFTBase4_3) {
